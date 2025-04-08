@@ -1,6 +1,7 @@
 {
-    "cSpell.words": [
-        "fastmcp",
-        "Firecrawl"
-    ]
+  "cSpell.words": ["fastmcp", "Firecrawl"],
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

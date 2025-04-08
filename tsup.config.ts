@@ -3,9 +3,7 @@ import { readFileSync } from 'fs';
 import { resolve } from 'path';
 
 // Read version from package.json at build time
-const packageJson = JSON.parse(
-  readFileSync(resolve(__dirname, './package.json'), 'utf8')
-);
+const packageJson = JSON.parse(readFileSync(resolve(__dirname, './package.json'), 'utf8'));
 
 export default defineConfig({
   entry: ['src/index.ts'],
@@ -23,7 +21,7 @@ export default defineConfig({
     options.banner = {
       js: '// Firecrawl Simple MCP Server - https://github.com/firecrawl/firecrawl-simple-mcp',
     };
-    
+
     // Define version constant at build time
     options.define = {
       'process.env.PACKAGE_VERSION': JSON.stringify(packageJson.version),

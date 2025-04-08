@@ -1,3 +1,4 @@
+/* global console */
 // Test script for error handling with improved validation
 import { FirecrawlClient } from 'firecrawl-simple-client';
 import { URL } from 'url';
@@ -75,7 +76,7 @@ async function testErrorHandling() {
   try {
     console.log('Testing error handling...');
     const client = new EnhancedFirecrawlClient({
-      apiUrl: 'http://localhost:3002/v1'
+      apiUrl: 'http://localhost:3002/v1',
     });
 
     // Test invalid URL for scrape tool
@@ -83,7 +84,7 @@ async function testErrorHandling() {
     try {
       const result = await client.scrapeWebpage({
         url: 'invalid-url',
-        formats: ['markdown']
+        formats: ['markdown'],
       });
       console.log('Scrape result:', JSON.stringify(result, null, 2));
     } catch (error) {
@@ -94,7 +95,7 @@ async function testErrorHandling() {
     console.log('\nTesting map tool with invalid URL:');
     try {
       const result = await client.generateSitemap({
-        url: 'invalid-url'
+        url: 'invalid-url',
       });
       console.log('Map result:', JSON.stringify(result, null, 2));
     } catch (error) {

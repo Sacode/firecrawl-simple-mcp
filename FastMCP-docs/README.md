@@ -37,28 +37,28 @@ npm install fastmcp
 > There are many real-world examples of using FastMCP in the wild. See the [Showcase](#showcase) for examples.
 
 ```ts
-import { FastMCP } from "fastmcp";
-import { z } from "zod"; // Or any validation library that supports Standard Schema
+import { FastMCP } from 'fastmcp';
+import { z } from 'zod'; // Or any validation library that supports Standard Schema
 
 const server = new FastMCP({
-  name: "My Server",
-  version: "1.0.0",
+  name: 'My Server',
+  version: '1.0.0',
 });
 
 server.addTool({
-  name: "add",
-  description: "Add two numbers",
+  name: 'add',
+  description: 'Add two numbers',
   parameters: z.object({
     a: z.number(),
     b: z.number(),
   }),
-  execute: async (args) => {
+  execute: async args => {
     return String(args.a + args.b);
   },
 });
 
 server.start({
-  transportType: "stdio",
+  transportType: 'stdio',
 });
 ```
 
@@ -86,9 +86,9 @@ You can also run the server with SSE support:
 
 ```ts
 server.start({
-  transportType: "sse",
+  transportType: 'sse',
   sse: {
-    endpoint: "/sse",
+    endpoint: '/sse',
     port: 8080,
   },
 });
@@ -99,12 +99,12 @@ This will start the server and listen for SSE connections on `http://localhost:8
 You can then use `SSEClientTransport` to connect to the server:
 
 ```ts
-import { SSEClientTransport } from "@modelcontextprotocol/sdk/client/sse.js";
+import { SSEClientTransport } from '@modelcontextprotocol/sdk/client/sse.js';
 
 const client = new Client(
   {
-    name: "example-client",
-    version: "1.0.0",
+    name: 'example-client',
+    version: '1.0.0',
   },
   {
     capabilities: {},
@@ -127,15 +127,15 @@ FastMCP uses the [Standard Schema](https://standardschema.dev) specification for
 **Zod Example:**
 
 ```typescript
-import { z } from "zod";
+import { z } from 'zod';
 
 server.addTool({
-  name: "fetch-zod",
-  description: "Fetch the content of a url (using Zod)",
+  name: 'fetch-zod',
+  description: 'Fetch the content of a url (using Zod)',
   parameters: z.object({
     url: z.string(),
   }),
-  execute: async (args) => {
+  execute: async args => {
     return await fetchWebpageContent(args.url);
   },
 });
@@ -144,15 +144,15 @@ server.addTool({
 **ArkType Example:**
 
 ```typescript
-import { type } from "arktype";
+import { type } from 'arktype';
 
 server.addTool({
-  name: "fetch-arktype",
-  description: "Fetch the content of a url (using ArkType)",
+  name: 'fetch-arktype',
+  description: 'Fetch the content of a url (using ArkType)',
   parameters: type({
-    url: "string",
+    url: 'string',
   }),
-  execute: async (args) => {
+  execute: async args => {
     return await fetchWebpageContent(args.url);
   },
 });
@@ -163,15 +163,15 @@ server.addTool({
 Valibot requires the peer dependency @valibot/to-json-schema.
 
 ```typescript
-import * as v from "valibot";
+import * as v from 'valibot';
 
 server.addTool({
-  name: "fetch-valibot",
-  description: "Fetch the content of a url (using Valibot)",
+  name: 'fetch-valibot',
+  description: 'Fetch the content of a url (using Valibot)',
   parameters: v.object({
     url: v.string(),
   }),
-  execute: async (args) => {
+  execute: async args => {
     return await fetchWebpageContent(args.url);
   },
 });
@@ -183,13 +183,13 @@ server.addTool({
 
 ```js
 server.addTool({
-  name: "download",
-  description: "Download a file",
+  name: 'download',
+  description: 'Download a file',
   parameters: z.object({
     url: z.string(),
   }),
-  execute: async (args) => {
-    return "Hello, world!";
+  execute: async args => {
+    return 'Hello, world!';
   },
 });
 ```
@@ -198,17 +198,17 @@ The latter is equivalent to:
 
 ```js
 server.addTool({
-  name: "download",
-  description: "Download a file",
+  name: 'download',
+  description: 'Download a file',
   parameters: z.object({
     url: z.string(),
   }),
-  execute: async (args) => {
+  execute: async args => {
     return {
       content: [
         {
-          type: "text",
-          text: "Hello, world!",
+          type: 'text',
+          text: 'Hello, world!',
         },
       ],
     };
@@ -222,16 +222,16 @@ If you want to return a list of messages, you can return an object with a `conte
 
 ```js
 server.addTool({
-  name: "download",
-  description: "Download a file",
+  name: 'download',
+  description: 'Download a file',
   parameters: z.object({
     url: z.string(),
   }),
-  execute: async (args) => {
+  execute: async args => {
     return {
       content: [
-        { type: "text", text: "First message" },
-        { type: "text", text: "Second message" },
+        { type: 'text', text: 'First message' },
+        { type: 'text', text: 'Second message' },
       ],
     };
   },
@@ -243,17 +243,17 @@ server.addTool({
 Use the `imageContent` to create a content object for an image:
 
 ```js
-import { imageContent } from "fastmcp";
+import { imageContent } from 'fastmcp';
 
 server.addTool({
-  name: "download",
-  description: "Download a file",
+  name: 'download',
+  description: 'Download a file',
   parameters: z.object({
     url: z.string(),
   }),
-  execute: async (args) => {
+  execute: async args => {
     return imageContent({
-      url: "https://example.com/image.png",
+      url: 'https://example.com/image.png',
     });
 
     // or...
@@ -288,18 +288,18 @@ The above example is equivalent to:
 
 ```js
 server.addTool({
-  name: "download",
-  description: "Download a file",
+  name: 'download',
+  description: 'Download a file',
   parameters: z.object({
     url: z.string(),
   }),
-  execute: async (args) => {
+  execute: async args => {
     return {
       content: [
         {
-          type: "image",
-          data: "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
-          mimeType: "image/png",
+          type: 'image',
+          data: 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=',
+          mimeType: 'image/png',
         },
       ],
     };
@@ -313,21 +313,21 @@ Tools can log messages to the client using the `log` object in the context objec
 
 ```js
 server.addTool({
-  name: "download",
-  description: "Download a file",
+  name: 'download',
+  description: 'Download a file',
   parameters: z.object({
     url: z.string(),
   }),
   execute: async (args, { log }) => {
-    log.info("Downloading file...", {
+    log.info('Downloading file...', {
       url,
     });
 
     // ...
 
-    log.info("Downloaded file");
+    log.info('Downloaded file');
 
-    return "done";
+    return 'done';
   },
 });
 ```
@@ -344,20 +344,20 @@ The `log` object has the following methods:
 The errors that are meant to be shown to the user should be thrown as `UserError` instances:
 
 ```js
-import { UserError } from "fastmcp";
+import { UserError } from 'fastmcp';
 
 server.addTool({
-  name: "download",
-  description: "Download a file",
+  name: 'download',
+  description: 'Download a file',
   parameters: z.object({
     url: z.string(),
   }),
-  execute: async (args) => {
-    if (args.url.startsWith("https://example.com")) {
-      throw new UserError("This URL is not allowed");
+  execute: async args => {
+    if (args.url.startsWith('https://example.com')) {
+      throw new UserError('This URL is not allowed');
     }
 
-    return "done";
+    return 'done';
   },
 });
 ```
@@ -368,8 +368,8 @@ Tools can report progress by calling `reportProgress` in the context object:
 
 ```js
 server.addTool({
-  name: "download",
-  description: "Download a file",
+  name: 'download',
+  description: 'Download a file',
   parameters: z.object({
     url: z.string(),
   }),
@@ -386,7 +386,7 @@ server.addTool({
       total: 100,
     });
 
-    return "done";
+    return 'done';
   },
 });
 ```
@@ -404,9 +404,9 @@ Each resource is identified by a unique URI and can contain either text or binar
 
 ```ts
 server.addResource({
-  uri: "file:///logs/app.log",
-  name: "Application Logs",
-  mimeType: "text/plain",
+  uri: 'file:///logs/app.log',
+  name: 'Application Logs',
+  mimeType: 'text/plain',
   async load() {
     return {
       text: await readLogFile(),
@@ -448,13 +448,13 @@ You can also define resource templates:
 
 ```ts
 server.addResourceTemplate({
-  uriTemplate: "file:///logs/{name}.log",
-  name: "Application Logs",
-  mimeType: "text/plain",
+  uriTemplate: 'file:///logs/{name}.log',
+  name: 'Application Logs',
+  mimeType: 'text/plain',
   arguments: [
     {
-      name: "name",
-      description: "Name of the log",
+      name: 'name',
+      description: 'Name of the log',
       required: true,
     },
   ],
@@ -472,18 +472,18 @@ Provide `complete` functions for resource template arguments to enable automatic
 
 ```ts
 server.addResourceTemplate({
-  uriTemplate: "file:///logs/{name}.log",
-  name: "Application Logs",
-  mimeType: "text/plain",
+  uriTemplate: 'file:///logs/{name}.log',
+  name: 'Application Logs',
+  mimeType: 'text/plain',
   arguments: [
     {
-      name: "name",
-      description: "Name of the log",
+      name: 'name',
+      description: 'Name of the log',
       required: true,
-      complete: async (value) => {
-        if (value === "Example") {
+      complete: async value => {
+        if (value === 'Example') {
           return {
-            values: ["Example Log"],
+            values: ['Example Log'],
           };
         }
 
@@ -507,16 +507,16 @@ server.addResourceTemplate({
 
 ```ts
 server.addPrompt({
-  name: "git-commit",
-  description: "Generate a Git commit message",
+  name: 'git-commit',
+  description: 'Generate a Git commit message',
   arguments: [
     {
-      name: "changes",
-      description: "Git diff or description of changes",
+      name: 'changes',
+      description: 'Git diff or description of changes',
       required: true,
     },
   ],
-  load: async (args) => {
+  load: async args => {
     return `Generate a concise but descriptive commit message for these changes:\n\n${args.changes}`;
   },
 });
@@ -528,20 +528,20 @@ Prompts can provide auto-completion for their arguments:
 
 ```js
 server.addPrompt({
-  name: "countryPoem",
-  description: "Writes a poem about a country",
+  name: 'countryPoem',
+  description: 'Writes a poem about a country',
   load: async ({ name }) => {
     return `Hello, ${name}!`;
   },
   arguments: [
     {
-      name: "name",
-      description: "Name of the country",
+      name: 'name',
+      description: 'Name of the country',
       required: true,
-      complete: async (value) => {
-        if (value === "Germ") {
+      complete: async value => {
+        if (value === 'Germ') {
           return {
-            values: ["Germany"],
+            values: ['Germany'],
           };
         }
 
@@ -560,17 +560,17 @@ If you provide an `enum` array for an argument, the server will automatically pr
 
 ```js
 server.addPrompt({
-  name: "countryPoem",
-  description: "Writes a poem about a country",
+  name: 'countryPoem',
+  description: 'Writes a poem about a country',
   load: async ({ name }) => {
     return `Hello, ${name}!`;
   },
   arguments: [
     {
-      name: "name",
-      description: "Name of the country",
+      name: 'name',
+      description: 'Name of the country',
       required: true,
-      enum: ["Germany", "France", "Italy"],
+      enum: ['Germany', 'France', 'Italy'],
     },
   ],
 });
@@ -581,25 +581,25 @@ server.addPrompt({
 FastMCP allows you to `authenticate` clients using a custom function:
 
 ```ts
-import { AuthError } from "fastmcp";
+import { AuthError } from 'fastmcp';
 
 const server = new FastMCP({
-  name: "My Server",
-  version: "1.0.0",
-  authenticate: ({request}) => {
-    const apiKey = request.headers["x-api-key"];
+  name: 'My Server',
+  version: '1.0.0',
+  authenticate: ({ request }) => {
+    const apiKey = request.headers['x-api-key'];
 
     if (apiKey !== '123') {
       throw new Response(null, {
         status: 401,
-        statusText: "Unauthorized",
+        statusText: 'Unauthorized',
       });
     }
 
     // Whatever you return here will be accessible in the `context.session` object.
     return {
       id: 1,
-    }
+    };
   },
 });
 ```
@@ -608,7 +608,7 @@ Now you can access the authenticated session data in your tools:
 
 ```ts
 server.addTool({
-  name: "sayHello",
+  name: 'sayHello',
   execute: async (args, { session }) => {
     return `Hello, ${session.id}!`;
   },
@@ -630,12 +630,12 @@ We allocate a new server instance for each client connection to enable 1:1 commu
 You can listen to events emitted by the server using the `on` method:
 
 ```ts
-server.on("connect", (event) => {
-  console.log("Client connected:", event.session);
+server.on('connect', event => {
+  console.log('Client connected:', event.session);
 });
 
-server.on("disconnect", (event) => {
-  console.log("Client disconnected:", event.session);
+server.on('disconnect', event => {
+  console.log('Client disconnected:', event.session);
 });
 ```
 
@@ -653,15 +653,15 @@ Refer to [Sessions](#sessions) for examples of how to obtain a `FastMCPSession` 
 await session.requestSampling({
   messages: [
     {
-      role: "user",
+      role: 'user',
       content: {
-        type: "text",
-        text: "What files are in the current directory?",
+        type: 'text',
+        text: 'What files are in the current directory?',
       },
     },
   ],
-  systemPrompt: "You are a helpful file system assistant.",
-  includeContext: "thisServer",
+  systemPrompt: 'You are a helpful file system assistant.',
+  includeContext: 'thisServer',
   maxTokens: 100,
 });
 ```
@@ -703,12 +703,12 @@ session.server;
 You can listen to events emitted by the session using the `on` method:
 
 ```ts
-session.on("rootsChanged", (event) => {
-  console.log("Roots changed:", event.roots);
+session.on('rootsChanged', event => {
+  console.log('Roots changed:', event.roots);
 });
 
-session.on("error", (event) => {
-  console.error("Error:", event.error);
+session.on('error', event => {
+  console.error('Error:', event.error);
 });
 ```
 
@@ -744,10 +744,7 @@ Follow the guide https://modelcontextprotocol.io/quickstart/user and add the fol
   "mcpServers": {
     "my-mcp-server": {
       "command": "npx",
-      "args": [
-        "tsx",
-        "/PATH/TO/YOUR_PROJECT/src/index.ts"
-      ],
+      "args": ["tsx", "/PATH/TO/YOUR_PROJECT/src/index.ts"],
       "env": {
         "YOUR_ENV_VAR": "value"
       }

@@ -1,116 +1,128 @@
-import { mapTool } from '../src/tools/map';
-import { FirecrawlClient } from 'firecrawl-simple-client';
-import { TextContent } from 'fastmcp';
-import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
+/**
+ * Unit tests for the Firecrawl MCP Map Tool.
+ *
+ * These tests verify that the Map Tool correctly:
+ * - Returns sitemap content on success
+ * - Handles empty sitemap results
+ * - Handles errors gracefully
+ * - Passes all provided parameters to the Firecrawl client
+ *
+ * Mocks are used to simulate the Firecrawl client behavior.
+ */
 
-// Create a mock instance
+import { mapTool } from '../src/tools/map';
+import { TextContent, Context, ContentResult } from 'fastmcp';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+
+// Mock FirecrawlClient's generateSitemap method
 const mockGenerateSitemap = vi.fn();
 const mockFirecrawlClient = {
-  generateSitemap: mockGenerateSitemap
+  generateSitemap: mockGenerateSitemap,
 };
 
-// Mock the FirecrawlClient constructor
+// Mock the FirecrawlClient constructor to return the mock client
 vi.mock('firecrawl-simple-client', () => {
   return {
-    FirecrawlClient: vi.fn(() => mockFirecrawlClient)
+    FirecrawlClient: vi.fn(() => mockFirecrawlClient),
   };
 });
 
 describe('Map Tool', () => {
   beforeEach(() => {
+    // Reset mocks before each test
     vi.clearAllMocks();
   });
 
-  it('should successfully generate a sitemap', async () => {
-    // Mock successful response
+  it('returns sitemap content when successful', async () => {
+    // Simulate successful sitemap generation with 3 URLs
     const mockResponse = {
-      urls: [
-        'https://example.com',
-        'https://example.com/about',
-        'https://example.com/contact'
-      ]
+      success: true,
+      links: ['https://example.com', 'https://example.com/about', 'https://example.com/contact'],
     };
-
     mockGenerateSitemap.mockResolvedValueOnce(mockResponse);
 
-    // Execute the tool
-    const result = await mapTool.execute({
-      url: 'https://example.com',
-      limit: 10
-    });
+    const result = (await mapTool.execute(
+      { url: 'https://example.com' },
+      {} as Context<undefined>,
+    )) as ContentResult;
 
-    // Verify the result
+    // Should not be an error result
     expect(result.isError).toBe(false);
+    // Should return one content item
     expect(result.content).toHaveLength(1);
+    // Content should be of type 'text'
     expect((result.content[0] as TextContent).type).toBe('text');
+    // Text should mention number of URLs and include a known URL
     expect((result.content[0] as TextContent).text).toContain('Found 3 URLs');
     expect((result.content[0] as TextContent).text).toContain('https://example.com');
-    
-    // Verify the client was called with correct parameters
+
+    // Verify correct parameters passed to generateSitemap
     expect(mockGenerateSitemap).toHaveBeenCalledWith({
       url: 'https://example.com',
       search: undefined,
       ignoreSitemap: true,
       includeSubdomains: false,
-      limit: 10,
+      limit: 5000,
     });
   });
 
-  it('should handle empty sitemap results', async () => {
-    // Mock empty response
+  it('returns appropriate message when sitemap is empty', async () => {
+    // Simulate successful call but with no links found
     const mockResponse = {
-      urls: []
+      success: true,
+      links: [],
     };
-
     mockGenerateSitemap.mockResolvedValueOnce(mockResponse);
 
-    // Execute the tool
-    const result = await mapTool.execute({
-      url: 'https://example.com'
-    });
+    const result = (await mapTool.execute(
+      { url: 'https://example.com' },
+      {} as Context<undefined>,
+    )) as ContentResult;
 
-    // Verify the result
     expect(result.isError).toBe(false);
     expect(result.content).toHaveLength(1);
     expect((result.content[0] as TextContent).type).toBe('text');
+    // Should mention no URLs found
     expect((result.content[0] as TextContent).text).toContain('No URLs found in the sitemap');
   });
 
-  it('should handle errors gracefully', async () => {
-    // Mock error response
+  it('returns error content when sitemap generation fails', async () => {
+    // Simulate generateSitemap throwing an error
     const mockError = new Error('Failed to generate sitemap');
     mockGenerateSitemap.mockRejectedValueOnce(mockError);
 
-    // Execute the tool
-    const result = await mapTool.execute({
-      url: 'https://example.com'
-    });
+    const result = (await mapTool.execute(
+      { url: 'https://example.com' },
+      {} as Context<undefined>,
+    )) as ContentResult;
 
-    // Verify the result
     expect(result.isError).toBe(true);
     expect(result.content).toHaveLength(1);
     expect((result.content[0] as TextContent).type).toBe('text');
+    // Should include 'Error:' in the returned text
     expect((result.content[0] as TextContent).text).toContain('Error:');
   });
 
-  it('should use all provided parameters', async () => {
-    // Mock successful response
+  it('passes all provided parameters to Firecrawl client', async () => {
+    // Simulate successful response
     const mockResponse = {
-      urls: ['https://example.com']
+      success: true,
+      links: ['https://example.com'],
     };
-
     mockGenerateSitemap.mockResolvedValueOnce(mockResponse);
 
-    // Execute the tool with all parameters
-    const result = await mapTool.execute({
-      url: 'https://example.com',
-      search: 'test',
-      ignoreSitemap: false,
-      includeSubdomains: true,
-      limit: 100
-    });
+    const result = (await mapTool.execute(
+      {
+        url: 'https://example.com',
+        search: 'test',
+        ignoreSitemap: false,
+        includeSubdomains: true,
+        limit: 100,
+      },
+      {} as Context<undefined>,
+    )) as ContentResult;
 
-    // Verify the client was called with correct parameters
+    // Verify all parameters are forwarded correctly
     expect(mockGenerateSitemap).toHaveBeenCalledWith({
       url: 'https://example.com',
       search: 'test',

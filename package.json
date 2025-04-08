@@ -7,21 +7,21 @@
     "firecrawl-simple-mcp": "./dist/index.js"
   },
   "scripts": {
-    "build": "tsup",
-    "dev": "tsup --watch",
     "clean": "rimraf dist",
+    "build": "tsup",
     "build:clean": "npm run clean && npm run build",
     "test": "vitest run",
-    "test:watch": "vitest",
     "coverage": "vitest run --coverage",
-    "lint": "eslint src",
-    "lint:fix": "eslint src --fix",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
     "typecheck": "tsc --noEmit",
-    "format": "prettier --write \"src/**/*.ts\"",
-    "docs": "echo \"Documentation generation not configured yet\"",
-    "release": "npm run lint && npm run typecheck && npm run test && npm version",
-    "prepublishOnly": "npm run build:clean",
-    "publish": "npm run release && git push && git push --tags"
+    "prepare-release": "npm run clean && npm run build && npm run lint && npm run typecheck && npm run test",
+    "version-bump": "npm version",
+    "version-bump:patch": "npm version patch -m \"chore(release): %s\"",
+    "release": "npm run prepare-release && npm run version-bump",
+    "publish:full": "npm run release && git push && git push --tags && npm publish",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "mcp",
@@ -42,11 +42,11 @@
   "type": "module",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dsafonov/firecrawl-simple-mcp.git"
+    "url": "git+https://github.com/Sacode/firecrawl-simple-mcp.git"
   },
-  "homepage": "https://github.com/dsafonov/firecrawl-simple-mcp#readme",
+  "homepage": "https://www.npmjs.com/package/firecrawl-simple-mcp",
   "bugs": {
-    "url": "https://github.com/dsafonov/firecrawl-simple-mcp/issues"
+    "url": "https://github.com/Sacode/firecrawl-simple-mcp/issues"
   },
   "engines": {
     "node": ">=18.0.0"
@@ -75,5 +75,16 @@
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.29.0",
     "vitest": "^3.1.1"
+  },
+  "module": "dist/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

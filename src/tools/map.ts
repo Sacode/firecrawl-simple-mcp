@@ -9,7 +9,14 @@ import { getClient } from '../utils/client-factory';
 import { ValidationError } from '../utils/error';
 
 /**
- * Input schema for the map tool
+ * Zod schema defining the input parameters for the firecrawl_map tool.
+ *
+ * Parameters:
+ * - url (string, required): The starting URL for sitemap generation.
+ * - search (string, optional): A search query to filter or guide the mapping.
+ * - ignoreSitemap (boolean, optional, default=true): Whether to ignore the site's existing sitemap.xml.
+ * - includeSubdomains (boolean, optional, default=false): Whether to include subdomains in the crawl.
+ * - limit (number, optional, default=5000): Maximum number of URLs to return.
  */
 export const mapToolSchema = z.object({
   url: z.string().url().describe('The URL to start mapping from (required)'),
@@ -28,7 +35,24 @@ export const mapToolSchema = z.object({
 });
 
 /**
- * MCP tool definition for mapping a site
+ * The result returned from the sitemap generation client call.
+ */
+export interface SitemapResult {
+  success: boolean;
+  links?: string[];
+}
+
+/**
+ * MCP tool definition for generating a sitemap of a website.
+ *
+ * This tool uses the Firecrawl client to crawl a website starting from the provided URL,
+ * optionally filtering with a search query, and returns a list of discovered URLs formatted as markdown.
+ *
+ * The tool parameters are validated against `mapToolSchema`.
+ * The response contains a markdown-formatted list of URLs or a message if no URLs were found.
+ *
+ * Throws:
+ * - ValidationError if the sitemap generation fails or returns an invalid result.
  */
 export const mapTool = createTool({
   name: 'firecrawl_map',
@@ -45,11 +69,16 @@ export const mapTool = createTool({
       limit: params.limit,
     });
 
-    if (!result || !('urls' in result) || !Array.isArray(result.urls)) {
-      throw new ValidationError('Invalid sitemap result: Missing or invalid urls array');
+    if (!result || typeof result !== 'object' || !('success' in result)) {
+      throw new ValidationError('Invalid sitemap result: missing success flag');
     }
 
-    const urls = (result as { urls: string[] }).urls;
+    if (!result.success) {
+      throw new ValidationError('Sitemap generation failed');
+    }
+
+    const sitemapResult = result as SitemapResult;
+    const urls: string[] = Array.isArray(sitemapResult.links) ? sitemapResult.links : [];
 
     // Format the response as markdown
     let responseText = `# Sitemap for ${params.url}\n\n`;
@@ -58,11 +87,12 @@ export const mapTool = createTool({
       responseText += 'No URLs found in the sitemap.\n';
     } else {
       responseText += `Found ${String(urls.length)} URLs:\n\n`;
-      urls.forEach((url, index) => {
+      urls.forEach((url: string, index: number) => {
         responseText += `${String(index + 1)}. ${url}\n`;
       });
     }
 
-    return createTextResponse(responseText);
+    const response = createTextResponse(responseText);
+    return response;
   },
 });

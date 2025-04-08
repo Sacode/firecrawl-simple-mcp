@@ -2,7 +2,7 @@
 
 A Model Context Protocol (MCP) server that provides web search capabilities using SearxNG, allowing AI assistants like Claude to search the web.
 
-> *Created by AI with human supervision - because sometimes even artificial intelligence needs someone to tell it when to take a coffee break! 🤖☕*
+> _Created by AI with human supervision - because sometimes even artificial intelligence needs someone to tell it when to take a coffee break! 🤖☕_
 
 ## Overview
 
@@ -31,9 +31,7 @@ Create a `.clauderc` file in your home directory:
   "mcpServers": {
     "searxng": {
       "command": "pipx",
-      "args": [
-        "run", "searxng-simple-mcp@latest"
-      ],
+      "args": ["run", "searxng-simple-mcp@latest"],
       "env": {
         "SEARXNG_MCP_SEARXNG_URL": "https://your-instance.example.com"
       }
@@ -49,9 +47,7 @@ Create a `.clauderc` file in your home directory:
   "mcpServers": {
     "searxng": {
       "command": "uvx",
-      "args": [
-        "run", "searxng-simple-mcp@latest"
-      ],
+      "args": ["run", "searxng-simple-mcp@latest"],
       "env": {
         "SEARXNG_MCP_SEARXNG_URL": "https://your-instance.example.com"
       }
@@ -84,8 +80,12 @@ Create a `.clauderc` file in your home directory:
     "searxng": {
       "command": "docker",
       "args": [
-        "run", "--rm", "-i", "--network=host",
-        "-e", "SEARXNG_MCP_SEARXNG_URL=http://localhost:8080",
+        "run",
+        "--rm",
+        "-i",
+        "--network=host",
+        "-e",
+        "SEARXNG_MCP_SEARXNG_URL=http://localhost:8080",
         "ghcr.io/sacode/searxng-simple-mcp:latest"
       ]
     }
@@ -103,15 +103,15 @@ Create a `.clauderc` file in your home directory:
 
 Configure the server using environment variables:
 
-| Environment Variable | Description | Default Value |
-|----------------------|-------------|---------------|
-| SEARXNG_MCP_SEARXNG_URL | URL of the SearxNG instance to use | <https://paulgo.io/> |
-| SEARXNG_MCP_TIMEOUT | HTTP request timeout in seconds | 10 |
-| SEARXNG_MCP_DEFAULT_RESULT_COUNT | Default number of results to return | 10 |
-| SEARXNG_MCP_DEFAULT_LANGUAGE | Language code for results (e.g., 'en', 'ru', 'all') | all |
-| SEARXNG_MCP_DEFAULT_FORMAT | Default format for results ('text', 'json') | text |
-| SEARXNG_MCP_LOG_LEVEL | Logging level (e.g., 'DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL') | ERROR |
-| TRANSPORT_PROTOCOL | Transport protocol ('stdio' or 'sse') | stdio |
+| Environment Variable             | Description                                                           | Default Value        |
+| -------------------------------- | --------------------------------------------------------------------- | -------------------- |
+| SEARXNG_MCP_SEARXNG_URL          | URL of the SearxNG instance to use                                    | <https://paulgo.io/> |
+| SEARXNG_MCP_TIMEOUT              | HTTP request timeout in seconds                                       | 10                   |
+| SEARXNG_MCP_DEFAULT_RESULT_COUNT | Default number of results to return                                   | 10                   |
+| SEARXNG_MCP_DEFAULT_LANGUAGE     | Language code for results (e.g., 'en', 'ru', 'all')                   | all                  |
+| SEARXNG_MCP_DEFAULT_FORMAT       | Default format for results ('text', 'json')                           | text                 |
+| SEARXNG_MCP_LOG_LEVEL            | Logging level (e.g., 'DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL') | ERROR                |
+| TRANSPORT_PROTOCOL               | Transport protocol ('stdio' or 'sse')                                 | stdio                |
 
 **Note:** Setting log levels higher than ERROR (such as DEBUG or INFO) may break integration with some applications due to excessive output in the communication channel.
 
@@ -206,6 +206,7 @@ For complete Docker usage information, see the [Docker Configuration](#docker-co
 The MCP server supports two transport protocols:
 
 - **STDIO** (default): For CLI applications and direct integration
+
   - Used by default in all examples
   - Suitable for integration with Claude Desktop and other MCP-compliant clients
   - No HTTP server is started
@@ -224,7 +225,7 @@ To use the SSE transport protocol:
    ```bash
    # Set the transport protocol to SSE
    TRANSPORT_PROTOCOL=sse python -m searxng_simple_mcp.server
-   
+
    # Or with FastMCP
    fastmcp run src/searxng_simple_mcp/server.py --transport sse
    ```
@@ -330,10 +331,12 @@ When using Docker with MCP servers, keep these points in mind:
 1. **Integration with MCP clients**: Use the configuration shown in the [Using with Docker](#using-with-docker-no-installation-required) section for integrating with Claude Desktop or other MCP-compliant clients.
 
 2. **Transport protocols**:
+
    - By default, the Docker container uses the stdio transport protocol
    - For SSE transport, see the [Using SSE Transport](#using-sse-transport) section
 
 3. **Configuration options**:
+
    - Use an environment file (.env) to configure the server: `docker run --env-file .env ...`
    - Pass individual environment variables with the `-e` flag: `docker run -e SEARXNG_MCP_SEARXNG_URL=https://example.com ...`
    - See the [Configuration](#configuration) section for available environment variables

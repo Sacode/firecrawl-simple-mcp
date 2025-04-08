@@ -66,7 +66,7 @@ const client = new FirecrawlClient({
 const crawlResult = await client.startCrawl({
   url: 'https://example.com',
   maxDepth: 3,
-  limit: 100
+  limit: 100,
 });
 
 // Check crawl status
@@ -80,7 +80,7 @@ const scrapeResult = await client.scrapeWebpage({
   url: 'https://example.com',
   waitFor: 0, // Time in ms to wait for JavaScript execution
   formats: ['markdown', 'rawHtml'],
-  timeout: 30000
+  timeout: 30000,
 });
 
 // Access scrape results directly
@@ -88,9 +88,8 @@ console.log(scrapeResult.data.markdown);
 
 // Generate a sitemap
 const sitemapResult = await client.generateSitemap({
-  url: 'https://example.com'
+  url: 'https://example.com',
 });
-
 ```
 
 ## Configuration
@@ -153,7 +152,7 @@ new FirecrawlClient(config?: Partial<FirecrawlConfig>)
 
 ### Crawl Options
 
-```typescript
+````typescript
 {
   url: string;                  // The URL to start crawling from (required)
   maxDepth?: number;            // Maximum depth to crawl
@@ -184,7 +183,7 @@ new FirecrawlClient(config?: Partial<FirecrawlConfig>)
   includeSubdomains?: boolean;  // Include subdomains of the website
   limit?: number;               // Maximum number of links to return
 }
-```
+````
 
 ### Error Handling
 

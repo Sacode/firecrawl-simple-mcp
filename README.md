@@ -2,6 +2,11 @@
 
 A Model Context Protocol (MCP) server for Firecrawl Simple, a powerful web scraping and site mapping tool that enables Large Language Models (LLMs) to access and process web content.
 
+## Project Links
+
+- [GitHub Repository](https://github.com/Sacode/firecrawl-simple-mcp)
+- [npm Package](https://www.npmjs.com/package/firecrawl-simple-mcp)
+
 ## Table of Contents
 
 - [Prerequisites](#prerequisites)
@@ -85,15 +90,15 @@ firecrawl-simple-mcp
 
 The server can be configured using environment variables:
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `FIRECRAWL_API_URL` | URL of the Firecrawl Simple API | `http://localhost:3002/v1` |
-| `FIRECRAWL_API_KEY` | API key for authentication (if required) | - |
-| `FIRECRAWL_API_TIMEOUT` | API request timeout in milliseconds | `30000` |
-| `FIRECRAWL_SERVER_PORT` | Port for the MCP server when using SSE transport | `3003` |
-| `FIRECRAWL_TRANSPORT_TYPE` | Transport type (`stdio` or `sse`) | `stdio` |
-| `FIRECRAWL_LOG_LEVEL` | Logging level (DEBUG, INFO, WARN, ERROR) | `INFO` |
-| `FIRECRAWL_VERSION` | Version identifier | `1.0.0` |
+| Variable                   | Description                                      | Default                    |
+| -------------------------- | ------------------------------------------------ | -------------------------- |
+| `FIRECRAWL_API_URL`        | URL of the Firecrawl Simple API                  | `http://localhost:3002/v1` |
+| `FIRECRAWL_API_KEY`        | API key for authentication (if required)         | -                          |
+| `FIRECRAWL_API_TIMEOUT`    | API request timeout in milliseconds              | `30000`                    |
+| `FIRECRAWL_SERVER_PORT`    | Port for the MCP server when using SSE transport | `3003`                     |
+| `FIRECRAWL_TRANSPORT_TYPE` | Transport type (`stdio` or `sse`)                | `stdio`                    |
+| `FIRECRAWL_LOG_LEVEL`      | Logging level (DEBUG, INFO, WARN, ERROR)         | `INFO`                     |
+| `FIRECRAWL_VERSION`        | Version identifier                               | `1.0.0`                    |
 
 ### Using with Claude Desktop
 
@@ -151,6 +156,7 @@ Scrape content from a single URL with JavaScript rendering support.
 ```
 
 Parameters:
+
 - `url` (required): The URL to scrape.
 - `formats`: Array of output formats to return. Options include "markdown", "html", and "rawHtml".
 - `waitFor`: Time to wait for JavaScript execution in milliseconds.
@@ -178,6 +184,7 @@ Generate a sitemap of a given site.
 ```
 
 Parameters:
+
 - `url` (required): The URL to map.
 - `search`: Search term to filter URLs.
 - `ignoreSitemap`: Whether to ignore sitemap.xml.
@@ -192,7 +199,8 @@ Parameters:
 
 **Error**: `Failed to connect to Firecrawl API at http://localhost:3002/v1`
 
-**Solution**: 
+**Solution**:
+
 - Verify that the Firecrawl Simple API is running
 - Check that the API URL is correct, including the `/v1` path
 - Ensure there are no network restrictions blocking the connection
@@ -202,6 +210,7 @@ Parameters:
 **Error**: `Authentication failed: Invalid API key`
 
 **Solution**:
+
 - Verify that the `FIRECRAWL_API_KEY` is correct
 - Check if the API requires authentication
 - Contact the API administrator for valid credentials
@@ -211,6 +220,7 @@ Parameters:
 **Error**: `Request timed out after 30000ms`
 
 **Solution**:
+
 - Increase the `FIRECRAWL_API_TIMEOUT` value
 - Check if the target website is slow or unresponsive
 - Consider using the `waitFor` parameter to allow more time for JavaScript execution
@@ -220,6 +230,7 @@ Parameters:
 **Error**: `Rate limit exceeded`
 
 **Solution**:
+
 - Reduce the frequency of requests
 - Implement your own rate limiting strategy
 - Contact the API administrator for increased rate limits
@@ -229,6 +240,7 @@ Parameters:
 **Error**: `Invalid URL format`
 
 **Solution**:
+
 - Ensure the URL includes the protocol (http:// or https://)
 - Check for typos in the domain name
 - Verify that the URL is accessible in a regular browser
@@ -325,6 +337,7 @@ npm run coverage
 ```
 
 The test suite includes:
+
 - Unit tests for all MCP tools.
 - Error handling tests.
 - Parameter validation tests.
