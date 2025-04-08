@@ -1,7 +1,7 @@
 {
   "name": "firecrawl-simple-mcp",
   "version": "1.0.2",
-  "description": "Model Context Protocol (MCP) server for Firecrawl Simple - provides web scraping and crawling capabilities to LLMs",
+  "description": "MCP server for Firecrawl Simple — a web scraping and site mapping tool enabling LLMs to access and process web content",
   "main": "dist/index.js",
   "bin": {
     "firecrawl-simple-mcp": "./dist/index.js"
@@ -35,7 +35,8 @@
     "cursor",
     "sitemap",
     "web-crawler",
-    "headless-browser"
+    "headless-browser",
+    "site-mapping"
   ],
   "author": "Dmitry Safonov",
   "license": "MIT",
