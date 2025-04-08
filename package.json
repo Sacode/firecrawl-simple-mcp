@@ -1,6 +1,6 @@
 {
   "name": "firecrawl-simple-mcp",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Model Context Protocol (MCP) server for Firecrawl Simple - provides web scraping and crawling capabilities to LLMs",
   "main": "dist/index.js",
   "bin": {
