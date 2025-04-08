@@ -1,6 +1,6 @@
 {
   "name": "firecrawl-simple-mcp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Model Context Protocol (MCP) server for Firecrawl Simple - provides web scraping and crawling capabilities to LLMs",
   "main": "dist/index.js",
   "bin": {
@@ -21,7 +21,7 @@
     "docs": "echo \"Documentation generation not configured yet\"",
     "release": "npm run lint && npm run typecheck && npm run test && npm version",
     "prepublishOnly": "npm run build:clean",
-    "publish": "npm run release && git push && git push --tags && npm publish"
+    "publish": "npm run release && git push && git push --tags"
   },
   "keywords": [
     "mcp",
