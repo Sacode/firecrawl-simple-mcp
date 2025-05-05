@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/sacode-firecrawl-simple-mcp-badge.png)](https://mseep.ai/app/sacode-firecrawl-simple-mcp)
+
 # Firecrawl Simple MCP Server
 
 A Model Context Protocol (MCP) server for Firecrawl Simple, a powerful web scraping and site mapping tool that enables Large Language Models (LLMs) to access and process web content.
